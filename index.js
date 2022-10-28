@@ -8,7 +8,7 @@ const methodOverride = require('method-override');
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
 
-app.use(morgan('combined', {stream: accessLogStream}));
+app.use(morgan('common', {stream: accessLogStream}));
 app.use(express.static('public'));
 
 let topTenMovies = [
@@ -52,32 +52,34 @@ let topTenMovies = [
         title: 'The Good, the Bad and the Ugly',
         author: 'Sergio Leone'
     }
-  ];
-  
-  app.get('/', (req, res) => {
-    res.send('Welcome to my movie API!');
-  });
-  
-  app.get('/documentation', (req, res) => {                  
-    res.sendFile('public/documentation.html', { root: __dirname });
-  });
-  
-  app.get('/movies', (req, res) => {
-    res.json(topTenMovies);
-  });
+];
 
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }));
+app.use(morgan('common'));
+
+app.get('/', (req, res) => {
+  res.send('Welcome to my movie API!');
+});
+
+app.get('/documentation', (req, res) => {                  
+  res.sendFile('public/documentation.html', { root: __dirname });
+});
+
+app.get('/movies', (req, res) => {
+  res.json(topTenMovies);
+});
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+app.use(bodyParser.json());
+app.use(methodOverride());
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
   
-  app.use(bodyParser.json());
-  app.use(methodOverride());
-  
-  app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-  });
-  
-  app.listen(8080, () => {
-    console.log('Your app is listening on port 8080.');
-  })
+app.listen(8080, () => {
+  console.log('Your app is listening on port 8080.');
+})
