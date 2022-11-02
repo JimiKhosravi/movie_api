@@ -88,7 +88,7 @@ app.post('/users', (req, res) => {
 });
 
 // CREATE
-app.post('/users/:id/:movieTitle', (req, res) => {
+app.post('/users/:id/favoriteMovies/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
   let user = users.find( user => user.id == id );
@@ -117,7 +117,7 @@ app.put('/users/:id', (req, res) => {
 });
 
 // DELETE
-app.delete('/users/:id/:movieTitle', (req, res) => {
+app.delete('/users/:id/favoriteMovies/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
   let user = users.find( user => user.id == id );
@@ -163,7 +163,7 @@ app.get('/movies/:title', (req, res) => {
 });
 
 // READ GENRE
-app.get('/movies/genre/:genreName', (req, res) => {
+app.get('/genres/:genreName', (req, res) => {
   const { genreName } = req.params;
   const genre = movies.find(movie => movie.Genre.Name === genreName).Genre;
 
@@ -175,7 +175,7 @@ app.get('/movies/genre/:genreName', (req, res) => {
 });
 
 // READ Director
-app.get('/movies/directors/:directorName', (req, res) => {
+app.get('/directors/:directorName', (req, res) => {
   const { directorName } = req.params;
   const director = movies.find(movie => movie.Director.Name === directorName).Director;
 
