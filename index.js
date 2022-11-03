@@ -88,7 +88,7 @@ app.post('/users', (req, res) => {
 });
 
 // CREATE
-app.post('/users/:id/favoriteMovies/:movieTitle', (req, res) => {
+app.post('/users/:id/favoritemovies/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
   let user = users.find( user => user.id == id );
@@ -117,7 +117,7 @@ app.put('/users/:id', (req, res) => {
 });
 
 // DELETE
-app.delete('/users/:id/favoriteMovies/:movieTitle', (req, res) => {
+app.delete('/users/:id/favoritemovies/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
   let user = users.find( user => user.id == id );
