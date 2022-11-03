@@ -56,7 +56,7 @@
               </tr>
               <tr>
                 <td>Get Genre by Name</td>
-                <td>/movies/genre/:genreName</td>
+                <td>/genres/:genreName</td>
                 <td>GET</td>
                 <td>:genreName</td>
                 <td>-</td>
@@ -65,7 +65,7 @@
    
               <tr>
                 <td>Get director data by name</td>
-                <td>/movies/directors/:directorName</td>
+                <td>/directors/:directorName</td>
                 <td>GET</td>
                 <td>:directorName</td>
                 <td>-</td>
@@ -90,7 +90,7 @@
               </tr>
               <tr>
                 <td>Adds movie to favorite list</td>
-                <td>/users/:id/:movieTitle</td>
+                <td>/users/:id/favoritemovies/:movieTitle</td>
                 <td>POST</td>
                 <td>:movieTitle</td>
                 <td>-</td>
@@ -99,7 +99,7 @@
    
               <tr>
                 <td>Delete movie from favorite list</td>
-                <td>/users/:id/:movieTitle</td>
+                <td>/users/:id/favoritemovies/:movieTitle</td>
                 <td>DELETE</td>
                 <td>:movieTitle</td>
                 <td>-</td>
