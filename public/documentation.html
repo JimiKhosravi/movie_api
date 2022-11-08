@@ -48,11 +48,27 @@
               </tr>
               <tr>
                <td>Get a single movie by title</td>
-               <td>/movies/:title</td>
+               <td>/movies/:Title</td>
                <td>GET</td>
-               <td>:title</td>
+               <td>:Title</td>
                <td>-</td>
                <td>A JSON object holding data about a single movie</td>
+              </tr>
+              <tr>
+                <td>Get a list of all users</td>
+                <td>/users</td>
+                <td>GET</td>
+                <td>-</td>
+                <td>-</td>
+                <td>A JSON object holding data about all the users</td>
+              </tr>
+              <tr>
+                <td>Get a single user by username</td>
+                <td>/users/:Username</td>
+                <td>GET</td>
+                <td>:Username</td>
+                <td>-</td>
+                <td>A JSON object holding data about a single user</td>
               </tr>
               <tr>
                 <td>Get Genre by Name</td>
@@ -76,40 +92,42 @@
                 <td>/users</td>
                 <td>POST</td>
                 <td>-</td>
-                <td>A JSON object holding data about the users to add, structured like this { "name" : "Vincent", "favorite movie" : [] } </td>
-                <td>A JSON object holding data about the user that was added, structured like this { "name" : "Vincent", "favorite movie" : [] } including an ID </td>
+                <td>We will expect JSON in this format { ID: Integer, Username: String, Password: String, Email: String, Birthday: Date }
+                </td>
+                <td>A JSON object holding data about the user that was added, structured like this { Username: String, Password: String, Email: String, Birthday: Date, "favorite movie" : [] } including an ID </td>
               </tr>
    
               <tr>
-                <td>Allow new users update their user info</td>
-                <td>/users/:id</td>
+                <td>Allow new users update their user info by username</td>
+                <td>/users/:Username</td>
                 <td>PUT</td>
-                <td>:id</td>
-                <td>-</td>
+                <td>:Username</td>
+                <td>We will expect JSON in this format { Username: String (required), Password: String (required), Email: String (required), Birthday: Date }
+                </td>
                 <td>A JSON object holding data about the updated information</td>
               </tr>
               <tr>
                 <td>Adds movie to favorite list</td>
-                <td>/users/:id/favoritemovies/:movieTitle</td>
+                <td>/users/:Username/favoritemovies/:MovieID</td>
                 <td>POST</td>
-                <td>:movieTitle</td>
+                <td>:MovieID</td>
                 <td>-</td>
                 <td>A text message indicating whether the Movie was added</td>
               </tr>
    
               <tr>
                 <td>Delete movie from favorite list</td>
-                <td>/users/:id/favoritemovies/:movieTitle</td>
+                <td>/users/:Username/favoritemovies/:MovieID</td>
                 <td>DELETE</td>
-                <td>:movieTitle</td>
+                <td>:MovieID</td>
                 <td>-</td>
                 <td>A text message indicating whether the Movie was removed</td>
               </tr>
               <tr>
-                <td>Allow existing users to deregister</td>
-                <td>/users/:id</td>
+                <td>Allow existing users to deregister by username</td>
+                <td>/users/:Username</td>
                 <td>DELETE</td>
-                <td>:movieTitle</td>
+                <td>:Username</td>
                 <td>-</td>
                 <td>A text message indicating whether the User has deregistered</td>
               </tr>
