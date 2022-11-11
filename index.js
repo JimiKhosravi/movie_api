@@ -4,9 +4,13 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const uuid = require("uuid");
+const { check, validationResult } = require('express-validator');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const cors = require('cors');
+app.use(cors());
 
 let auth = require('./auth')(app);
 const passport = require('passport');
@@ -32,7 +36,26 @@ app.get('/documentation', (req, res) => {
 });
 
 //CREATE a user by a json file
-app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.post('/users',
+// Validation logic here for request
+//you can either use a chain of methods like .not().isEmpty()
+//which means "opposite of isEmpty" in plain english "is not empty"
+//or use .isLength({min: 5}) which means
+//minimum value of 5 characters are only allowed
+[
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid').isEmail()
+], passport.authenticate('jwt', { session: false }), (req, res) => {
+  // check the validation object for errors
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
@@ -41,7 +64,7 @@ app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) 
         Users
           .create({
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password:  hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
@@ -75,7 +98,25 @@ app.post('/users/:Username/favoritemovies/:MovieID', passport.authenticate('jwt'
 });
 
 // UPDATE
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/users/:Username',
+// Validation logic here for request
+//you can either use a chain of methods like .not().isEmpty()
+//which means "opposite of isEmpty" in plain english "is not empty"
+//or use .isLength({min: 5}) which means
+//minimum value of 5 characters are only allowed
+[
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid').isEmail()
+], passport.authenticate('jwt', { session: false }), (req, res) => {
+    // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    
   Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
     {
       Username: req.body.Username,
@@ -208,6 +249,8 @@ app.use((err, req, res, next) => {
 });
  
 // App Listening
-app.listen(8080, () => {
-  console.log('Your app is listening on port 8080.');
-})
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0',() => {
+ console.log('Listening on Port ' + port);
+});
+
