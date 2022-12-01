@@ -43,7 +43,7 @@ app.post('/users',
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
-  ], passport.authenticate('jwt', { session: false }), (req, res) => {
+  ], (req, res) => {
     // check the validation object for errors
     let errors = validationResult(req);
 
@@ -162,7 +162,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 });
 
 // READ get all movies
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
